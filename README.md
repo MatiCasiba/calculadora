@@ -1,6 +1,6 @@
-Nombre: Matias Casiba
-Link Netlify:
-Link repo GitHub:
+* Nombre: Matias Casiba
+* Link Netlify:
+* Link repo GitHub:
 
 # Desafio 11: creando una calculadora
 En este poryecto, se pidio crear una calculadora, para esto estaré utilizando html con css para mostrar en pantalla la calculadora, con html crearé los botones con sus números y signos, también una pantalla chica donde se mostrará la operación que deseas realizar, con css le estaré dando estilo a esta calculadora. En javaScript, estaré realizando las funciones para que la calculadora ande como corresponda. Las funciones que tendrá la calculadora es de suamar, restar, dividir y multiplicar.
@@ -108,6 +108,18 @@ Ancho del contenedor(400px) / cantidad de botones por fila(4)
 Entonces cuando combino flex-grow:1 y flex-shrink:1, voy a asegurarme de que los botones puedan ampliarse o achicarse de manera dinámica para que se adapte al contenedor. ¿Por qué 25%? Cada botón ocupa inicialmente el 25% de ancho del contenedor, para llegar a este resultado la cuenta seria de 100/ 4 = 25, le resto 10px para dejar espacio entre los botones.
 * calc(): me va a permitir realizar operaciones matemáticos (suma, resta, division, multiplicacion), con este puedo combinar valores diferentes, ejemplo: px, %, em, rem, vh, vw, etc.
 
+## Diseño en teclas
+Al momento de pasar el cursor por encima de los botones, estas cambiarán de color, para esto eh trabajado con un hover y agregué 2 colores en el root:
 
+```sh
+:root{
+  --colorTeclasHover: #ffff;
+  --colorNumeros-simbolosHover: #121111;
+}
 
+button:hover{
+  color: var(--colorNumeros-simbolosHover);
+  background-color: var(--colorTeclasHover);
+}
+```
 

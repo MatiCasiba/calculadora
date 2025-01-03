@@ -10,7 +10,9 @@
 
 :root{
   --colorTeclas: #121111;
+  --colorTeclasHover: #ffff;
   --colorNumeros-simbolos: #ffff;
+  --colorNumeros-simbolosHover: #121111;
   --colorNumeroPantalla: #121111;
   --colorBorde: #121111;
 }
@@ -50,4 +52,10 @@ button{
   flex-wrap: wrap;
   gap: 2px;
   margin-top: 10px;
+}
+
+/* hover */
+button:hover{
+  color: var(--colorNumeros-simbolosHover);
+  background-color: var(--colorTeclasHover);
 }
