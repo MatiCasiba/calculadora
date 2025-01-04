@@ -123,3 +123,48 @@ button:hover{
 }
 ```
 
+## Creando variables de estado, funcion para actualizar pantalla y reinicio de calculadora
+Primero comenzaré creando las variables de estado, antes de eso voy a acceder al contenedor div y los botones
+```sh
+let pantalla = document.getElementById('pantalla') # el display
+const botones = document.querySelectorAll('.btn') # obtengo todos los botones de la calculadora
+```
+
+### Variables de estado
+La finalidad con la que hago eso es para almacenar el estado de la calculadora
+
+```sh
+let entradaActual = ''
+let operacionActual = ''
+let resultados = ''
+let reinicaiarPantalla = false
+```
+* la variable entradaActual se encargará de almacenar los números que están ingresando
+* la variable operacionActual contenderá el operador de momento sea +, -, x o la /
+* la variable resultado va a guardar el resultado que se va acumulando de la operacion
+* la variable reiniciarPantalla lo declaré en booleano para indicar si se debe reiniciar la entrada despues de mostrar el resultado
+
+### Función para actualizar la pantalla
+Con este bloque de código voy a limitar la longitud del texto para evitar desbordes 
+```sh
+let actualizarPantalla = (valor) => {
+    if (valor.length > 13){
+        pantalla.textContent = valor.slice(0, 13) // limito a 13 caracteres
+    } else {
+        pantalla.textContent = valor // muestra el valor completo
+    }
+}
+```
+* valor: es el contendio que se va a mostrar en el display
+
+### Función para reiniciar la calculadora
+Voy a resetar todas las variables a sus valores inicial y mostrará 0 en el display, esto cuando el usuario haga click en el display y en cualquier momento que necesites un reinicio
+```sh
+let reiniciarCalculadora = () =>{
+    entradaActual = ''
+    operacionActual = ''
+    resultados = ''
+    reinicaiarPantalla = false
+    actualizarPantalla("0")
+}
+```
