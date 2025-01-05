@@ -1,6 +1,6 @@
 * Nombre: Matias Casiba
 * Link Netlify:
-* Link repo GitHub:
+* Link repo GitHub: https://github.com/MatiCasiba/calculadora
 
 # Desafio 11: creando una calculadora
 En este poryecto, se pidio crear una calculadora, para esto estaré utilizando html con css para mostrar en pantalla la calculadora, con html crearé los botones con sus números y signos, también una pantalla chica donde se mostrará la operación que deseas realizar, con css le estaré dando estilo a esta calculadora. En javaScript, estaré realizando las funciones para que la calculadora ande como corresponda. Las funciones que tendrá la calculadora es de suamar, restar, dividir y multiplicar.
@@ -167,4 +167,89 @@ let reiniciarCalculadora = () =>{
     reinicaiarPantalla = false
     actualizarPantalla("0")
 }
+```
+
+## Funcion para calcular
+En este bloque de código se encargará de procesar las operaciones matemáticas a ejecutar, suma, resta, mulñtiplicación y división:
+```sh
+let calcular = () =>{
+    if (!operacionActual || entradaActual === ""){
+        return; # si no hay operación o entrada, no se sigue
+    }
+
+    const n1 = parseFloat(resultados)
+    const n2 = parseFloat(entradaActual)
+
+    # verifico si los numeros son válidos
+    if (isNaN(n1) || isNaN(n2)){
+        return; # que salga si no cumple las condiciones necesarias
+    }
+
+    switch (operacionActual){
+        case "+":
+            resultados = (n1+n2).toString();
+            break;
+        case "-":
+            resultados = (n1-n2).toString();
+            break;
+        case "x":
+            resultados = (n1*n2).toString();
+            break;
+        case "/":
+            if (n2 === 0){
+                resultados = 'Error';
+            } else {
+                resultados = (n1 / n2).toString();
+            }
+            break;
+        default:
+            return;
+    }
+    entradaActual = ""
+    operacionActual = ""
+    actualizarPantalla(resultados)
+}
+```
+* En la condicion inicial lo que hace es que si no hay una operación pendiente o no se ha ingresado un número, no se hará nada
+* Nota -> uso isNaN para asegurarme que el programa maneje entradas no numéricas, con esto me evito de posibles errores algún comportamiento distinto
+```sh
+if (isNaN(n1) || isNaN(n2)){
+    return; # que salga si no cumple las condiciones necesarias
+}
+```
+* Verás que hay parseFloat, con esto convierto en números flotantes los resultados y la entradaActual
+```sh
+    const n1 = parseFloat(resultados)
+    const n2 = parseFloat(entradaActual)
+```
+* Switch se encarga de realizar la operación que se ingrese, hice un pequeño bloque de código para la división con la finalidad de que no se pueda dividir por 0, si el usuario lo intenta, este mostrará "Error"
+```sh
+switch (operacionActual){
+        case "+":
+            resultados = (n1+n2).toString();
+            break;
+        case "-":
+            resultados = (n1-n2).toString();
+            break;
+        case "x":
+            resultados = (n1*n2).toString();
+            break;
+        case "/":
+            if (n2 === 0){
+                resultados = 'Error';
+            } else {
+                resultados = (n1 / n2).toString();
+            }
+            break;
+        default:
+            return;
+    }
+```
+Con toString() convierto el resultado de las operaciones (números) en cadenas de texto antes de asignarlas a la variable resultado. Una de las razones por la cual lo uso es porque en el display de la calculadora (pantalla) es texto, si asignara un número directamente, js lo convertirá de manera no declarada en una cadena. Entonces al usar toString(), me aseguro de esta conversión, si no lelgara a usar esto, no estaría notando errores ya que js hace la conversión automáticamente.
+
+* Saliendo de switch, lo que verás en 3 líneas es la actualización. Este almacena el resultado como un string, se reinicia la entradaActual y muestra el resultado en el display:
+```sh
+    entradaActual = ""
+    operacionActual = ""
+    actualizarPantalla(resultados)
 ```

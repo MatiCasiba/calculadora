@@ -3,7 +3,6 @@ import './style.css'
 let pantalla = document.getElementById('pantalla') 
 const botones = document.querySelectorAll('.btn')
 
-
 let entradaActual = ''
 let operacionActual = ''
 let resultados = ''
@@ -27,3 +26,42 @@ let reiniciarCalculadora = () =>{
     actualizarPantalla("0")
 }
 
+// funcion para calculos
+
+let calcular = () =>{
+    if (!operacionActual || entradaActual === ""){
+        return;
+    }
+
+    const n1 = parseFloat(resultados)
+    const n2 = parseFloat(entradaActual)
+
+    // verifico si los numeros son válidos
+    if (isNaN(n1) || isNaN(n2)){
+        return;
+    }
+
+    switch (operacionActual){
+        case "+":
+            resultados = (n1+n2).toString();
+            break;
+        case "-":
+            resultados = (n1-n2).toString();
+            break;
+        case "x":
+            resultados = (n1*n2).toString();
+            break;
+        case "/":
+            if (n2 === 0){
+                resultados = 'Error';
+            } else {
+                resultados = (n1 / n2).toString();
+            }
+            break;
+        default:
+            return;
+    }
+    entradaActual = ""
+    operacionActual = ""
+    actualizarPantalla(resultados)
+}
