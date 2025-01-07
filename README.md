@@ -211,7 +211,7 @@ let calcular = () =>{
 }
 ```
 * En la condicion inicial lo que hace es que si no hay una operación pendiente o no se ha ingresado un número, no se hará nada
-* Nota -> uso isNaN para asegurarme que el programa maneje entradas no numéricas, con esto me evito de posibles errores algún comportamiento distinto
+* Nota -> uso isNaN para asegurarme que el programa maneje entradas no numéricas, con esto me evito de posibles errores o algún comportamiento distinto
 ```sh
 if (isNaN(n1) || isNaN(n2)){
     return; # que salga si no cumple las condiciones necesarias
@@ -245,11 +245,166 @@ switch (operacionActual){
             return;
     }
 ```
-Con toString() convierto el resultado de las operaciones (números) en cadenas de texto antes de asignarlas a la variable resultado. Una de las razones por la cual lo uso es porque en el display de la calculadora (pantalla) es texto, si asignara un número directamente, js lo convertirá de manera no declarada en una cadena. Entonces al usar toString(), me aseguro de esta conversión, si no lelgara a usar esto, no estaría notando errores ya que js hace la conversión automáticamente.
+Con toString() convierto el resultado de las operaciones (números) en cadenas de texto antes de asignarlas a la variable resultados. Una de las razones por la cual lo uso es porque en el display de la calculadora (pantalla) es texto, si asignara un número directamente, js lo convertirá de manera no declarada en una cadena. Entonces al usar toString(), me aseguro de esta conversión, si no llegara a usar esto, no estaría notando errores ya que js hace la conversión automáticamente.
 
 * Saliendo de switch, lo que verás en 3 líneas es la actualización. Este almacena el resultado como un string, se reinicia la entradaActual y muestra el resultado en el display:
 ```sh
     entradaActual = ""
     operacionActual = ""
     actualizarPantalla(resultados)
+```
+
+## Función para manejar evento de botones
+Este bloque de código permite que cada botón de la calculadora realice acciones según su tipo, sea números, operadores o el botón de =. Esta es la funcipon que se va a encargar de gestionar el flujo completo de la calculadora, desde la captura de entrada hasta la ejecución de operaciones matemáticas, lo realicé de la siguiente forma:
+```sh
+let operadores = ['+', '-', 'x', '/']
+botones.forEach((boton) => {
+    boton.addEventListener("click", () =>{
+        let valor = boton.textContent
+
+        if (!isNaN(valor) || valor === "."){
+            if (reiniciarPantalla){
+                entradaActual = ""
+                reiniciarPantalla = false
+                actualizarPantalla("0")
+            }
+            if (valor === "." && entradaActual.includes()) {
+                return;
+            }
+            entradaActual += valor
+            let valorPantalla
+            if (entradaActual){
+                valorPantalla = entradaActual
+            } else {
+                valorPantalla = "0"
+            }
+            actualizarPantalla(valorPantalla)
+
+        } else if (operadores.includes(valor)){
+            if (resultados && !entradaActual) {
+                operacionActual = valor
+                return
+            }
+            if (entradaActual && operacionActual) {
+                calcular ()
+            }
+            if (!resultados){
+                resultados = entradaActual
+            }
+            operacionActual = valor
+            entradaActual = ""
+
+        } else if (valor === "=") {
+            calcular()
+        } 
+    })
+})
+```
+### Definiendo los operadores
+Cree una array para los símbolos de las operiones matemáticas que va tener la calculadora:
+```sh
+let operadores = ['+', '-', 'x', '/']
+```
+
+### La iteración sobre botones
+Botones es una lista de elementos html que la obtuve con document.querySelectorAll('btn'), el forEach() va a recorrer cada botón y ejecuta la función proporcionada por cada uno. Cada elemento individiual del recorrido se llama boton
+```sh
+botones.forEach((boton) => {...})
+```
+
+### Agrego un evento a cada botón
+Agregué un evento de tio click a cada botón, cada vez que el usuario haga click en un botón, se va a ejecutar la función que desea:
+```sh
+boton.addEventListener("click", () => {...})
+```
+
+### Obteniendo el texto del boton
+Esta parte va a obtener el texto que contiene el boton seleccionado y va a guardarse en la variable valor, el texto es lo que va a identificar si es un número, operador o algún otro símbolo sea = o un .
+```sh
+const valor = boton.textContent;
+```
+
+### Manejando números y el punto decimal
+Este bloque se va a ejecutar si botón presionado es un número o un punto:
+```sh
+if (!isNaN(valor) || valor === ".") {
+}
+```
+* !isNaN(): va a verificar si el valor es un número, usando el hecho de que devuelve true para valores no numéricos
+* valor === ".": permite que el punto decimal pase este filtro
+
+### Un reinicio a la pantalla si es necesario
+Esta parte del código se encargará del reinicio de la pantalla, si reiniciarPantalla es verdadero, limpiará la entrada actual -> entradaActual="", entonces se reiniciará la pantalla mostrando un 0. Luego cambia reiniciarPantalla a false para evitar reinicar denuevo en el siguiente click:
+```sh
+if (reiniciarPantalla) {
+    entradaActual = "";
+    reiniciarPantalla = false;
+    actualizarPantalla("0");
+}
+```
+
+### Evitando multiples puntos decimales
+Esta condicón se va a encargar de que si el usurio intenta agregar otro punto decimal cuando ya hay uno en entradaActual, la función se detiene con return:
+```sh
+if (valor === "." && entradaActual.includes()) {
+    return;
+}
+```
+
+### Agregando el valorn a la entrada actual
+Acá se concatena el valor presionado (numero o un punto) al contenido actual de entradaActual
+```sh
+entradaActual += valor
+```
+
+### Actualiza la pantalla
+```sh
+let valorPantalla;
+if (entradaActual) {
+    valorPantalla = entradaActual;
+} else {
+    valorPantalla = "0";
+}
+actualizarPantalla(valorPantalla);
+```
+Si entradaActual tiene un valor, se asigna a valorPantalla, en todo caso si está vacio se asigna un 0. Saliendo de esta condición, llamo a actualizarPantalla(valorPantall) para mostrar el valor actualizado
+
+### Manejando operadores de pantalla
+Esto va a comprobar si el botón presionado es uno de los operadores definidos en el array "operadores"
+```sh
+} else if (operadores.includes(valor)){
+```
+### Operación sin entrada nueva
+En este bloque de código lo que estoy queriendo decir es que si ya hay un resultado y no hay valor nuevo en entradaActual, actualiza el operador (operacionActual=valor) y detiene la ejecución
+```sh
+if (resultados && !entradaActual) {
+   operacionActual = valor
+   return;
+}
+```
+
+### Ejecutando una operación si hay datos
+Si hay un operador y un valor en entadaActual, se llaman a la funcion calcular para procesar la operación pendiente 
+```sh
+if (entradaActual && operacionActual) {
+    calcular ()
+}
+```
+
+### Configurando los valores actuales
+En esta parte lo que hace es ver si no encuentra un resultado almacenado, guarda el valor de entradaActual en resultados, asigno el operador actual a la variable operacionActual, luego limpio entradaActual para que esté listo para el próximo número 
+```sh
+if (!resultados){
+    resultados = entradaActual
+}
+operacionActual = valor
+entradaActual = ""
+```
+
+### Manejo del botón igual =
+Si el botón presionado es =, se llama a la función calcular() para resolver la operación actual:
+```sh
+} else if (valor === "=") {
+    calcular()
+} 
 ```

@@ -6,7 +6,7 @@ const botones = document.querySelectorAll('.btn')
 let entradaActual = ''
 let operacionActual = ''
 let resultados = ''
-let reinicaiarPantalla = false
+let reiniciarPantalla = false
 
 // función para actualizar la pantalla
 let actualizarPantalla = (valor) => {
@@ -22,12 +22,11 @@ let reiniciarCalculadora = () =>{
     entradaActual = ''
     operacionActual = ''
     resultados = ''
-    reinicaiarPantalla = false
+    reiniciarPantalla = false
     actualizarPantalla("0")
 }
 
 // funcion para calculos
-
 let calcular = () =>{
     if (!operacionActual || entradaActual === ""){
         return;
@@ -65,3 +64,48 @@ let calcular = () =>{
     operacionActual = ""
     actualizarPantalla(resultados)
 }
+
+// función para manejar el evento de botones
+let operadores = ['+', '-', 'x', '/']
+botones.forEach((boton) => {
+    boton.addEventListener("click", () =>{
+        let valor = boton.textContent
+
+        if (!isNaN(valor) || valor === "."){
+            if (reiniciarPantalla){
+                entradaActual = ""
+                reiniciarPantalla = false
+                actualizarPantalla("0")
+            }
+            if (valor === "." && entradaActual.includes()) {
+                return;
+            }
+            entradaActual += valor
+            let valorPantalla
+            if (entradaActual){
+                valorPantalla = entradaActual
+            } else {
+                valorPantalla = "0"
+            }
+            actualizarPantalla(valorPantalla)
+
+        } else if (operadores.includes(valor)){
+            if (resultados && !entradaActual) {
+                operacionActual = valor
+                return;
+            }
+            if (entradaActual && operacionActual) {
+                calcular ()
+            }
+            if (!resultados){
+                resultados = entradaActual
+            }
+            operacionActual = valor
+            entradaActual = ""
+
+        } else if (valor === "=") {
+            calcular()
+        } 
+    })
+})
+
