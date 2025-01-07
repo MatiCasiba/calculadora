@@ -11,6 +11,7 @@
 :root{
   --colorTeclas: #121111;
   --colorTeclasHover: #ffff;
+  --colorTeclasActive: #bfbdc1;
   --colorNumeros-simbolos: #ffff;
   --colorNumeros-simbolosHover: #121111;
   --colorNumeroPantalla: #121111;
@@ -58,4 +59,7 @@ button{
 button:hover{
   color: var(--colorNumeros-simbolosHover);
   background-color: var(--colorTeclasHover);
+}
+button:active{
+  background-color: var(--colorTeclasActive);
 }

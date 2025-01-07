@@ -122,6 +122,13 @@ button:hover{
   background-color: var(--colorTeclasHover);
 }
 ```
+### Color active 
+Cuando el usuario aprete la tecla, el color de fondo de la tecla pasará a tener un color gris, esto lo logro con button:active
+```sh
+button:active{
+  background-color: var(--colorTeclasActive);
+}
+```
 
 ## Creando variables de estado, funcion para actualizar pantalla y reinicio de calculadora
 Primero comenzaré creando las variables de estado, antes de eso voy a acceder al contenedor div y los botones
@@ -407,4 +414,10 @@ Si el botón presionado es =, se llama a la función calcular() para resolver la
 } else if (valor === "=") {
     calcular()
 } 
+```
+
+## Reiniciando pantalla cuando se le haga click
+Con esto, cuando el usuario haga click en la pantalla de la calculadora, se va a ejecutar la función reiniciarCalculadora, con la finalidad de reinciar el estado de la calculadora:
+```sh
+pantalla.addEventListener("click", reiniciarCalculadora)
 ```

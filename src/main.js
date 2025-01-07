@@ -109,3 +109,5 @@ botones.forEach((boton) => {
     })
 })
 
+//Reiniciando la pantalla cuando haga click
+pantalla.addEventListener("click", reiniciarCalculadora)
